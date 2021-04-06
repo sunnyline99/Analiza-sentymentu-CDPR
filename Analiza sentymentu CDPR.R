@@ -9,15 +9,15 @@ library(rtweet)
 
 #Czyszczenie tweetow + zamiana emotek na tekst przez wgranie z pliku + analiza emotek
 
-Dane <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data")
+Dane <- read.csv("ścieżka dostępu do danych z Twittera\\Old_data")
 
 Dane$text <- gsub("[<>]"," ", Dane$text)
 Dane$text <- gsub("000","",Dane$text)
 Dane$text <- gsub("\\+","!",Dane$text)
 Dane$text <- gsub("U!","",Dane$text)
 
-Emotikony_db <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\emoji_df.csv")
-Emotikony_sentyment <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Emoji_Sentiment_Data.csv")
+Emotikony_db <- read.csv("Ścieżka dostępu do danych z emoji\\emoji_df.csv")
+Emotikony_sentyment <- read.csv("ścieżka dostępu do danych z sentymentem emoji\\Emoji_Sentiment_Data.csv")
 Emotikony_sentyment$codepoints <- sprintf("%x", Emotikony_sentyment$Unicode.codepoint)
 
 Emotikony <- merge(x = Emotikony_db, y = Emotikony_sentyment, by = "codepoints", all.y = TRUE)
@@ -108,7 +108,7 @@ wordcloud(words = df$word, freq = df$freq, min.freq = 1,
           max.words=200, random.order=FALSE, 
           rot.per=0.15,colors=brewer.pal(8, "Dark2"))
 
-## emocjonalnosc wszystkich wypowiedzi w ca�ym badanym okresie
+## emocjonalnosc wszystkich wypowiedzi w ca³ym badanym okresie
 
 emotions <- get_nrc_sentiment(Dane$text)
 
@@ -155,7 +155,7 @@ Dane <- bind_cols(Dane,data.frame(sentiment_syuzhet),data.frame(sentiment_bing),
 
 colnames(Dane)[6:9] <- c("sentiment_syuzhet","sentiment_bing","sentiment_afinn","sentiment_nrc")
 
-## korelacje pomiedzy roznymi (zrobi� pokaz jaka korelacja z emotkami i bez)
+## korelacje pomiedzy roznymi (zrobiæ pokaz jaka korelacja z emotkami i bez)
 
 sentiments <- Dane[,c(6:9)]
 cor(sentiments)
@@ -221,7 +221,7 @@ sentiment_ts_data <- sentiment_ts_data[-c(1:5),]
 inds
 
 plot(sentiment_ts_data$inds,sentiment_ts_data$suma_s, type = "l", col ="red", ylim = c(-1,10), lwd = 2, 
-     ylab = "Pozytywno�� wypowiedzi",
+     ylab = "Pozytywnoœæ wypowiedzi",
      xlab = "Data",
      xaxt="n")
 axis.Date(1, at=seq(min(sentiment_ts_data$inds), max(sentiment_ts_data$inds), "days"))
