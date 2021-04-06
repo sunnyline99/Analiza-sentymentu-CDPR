@@ -6,17 +6,17 @@ library(syuzhet)
 library(dplyr)
 library(wordcloud)
 
-## Polaczenie z Twitter API:``
+## Polaczenie z Twitter API oraz autoryzacja
 
-api_key <- "6yNDDHBek6hzGVaP5PmTxcRwA"
-api_secret_key <- "qGJtZah9jMBM0Aa7o7oWHRRyYgO5tGc2twCthTBbRYG1m6PoWU"
-token_bearer <- "AAAAAAAAAAAAAAAAAAAAAEfcNAEAAAAABoULIjaTDdaxYoza2Wr8mWBYeIc%3DVFc6G6Dbc9mLqNJ7uRRANaK4LJDEGbxveXKcnVNspiJe99peHQ"
-acces_token <- "2387694907-nejkOeGq1nB85NIK79cymQGfwWu6l4avyvoxMDe"
-acces_token_secret <- "2vhgixTBWIJPORsl0v8vYzadGn9p2O6247waRq9CDyS5e"
+api_key <- "klucz z API Twittera"
+api_secret_key <- "sekretny klucz z API Twittera"
+token_bearer <- "TOKEN_BEARER"
+acces_token <- "TOKEN"
+acces_token_secret <- "SEKRETNY TOKEN"
 setup_twitter_oauth(api_key,api_secret_key,acces_token,acces_token_secret)
 1
 
-## Pobieranie danych
+## Pobieranie danych z Twittera
 
 CD_Projekt_RED_Hash <- searchTwitter("#CDProjektRED", n=2000, lang = "en")
 Cyberpunk2077_Hash <- searchTwitter("#Cyberpunk2077", n=4000, lang = "en")
@@ -25,19 +25,23 @@ cd_projekt_red <- searchTwitter("cd projekt red", n=2000, lang = "en")
 CD_Projekt_RED <- searchTwitter("CD Project Red", n=2000, lang = "en")
 CDPR <- searchTwitter("CDPR", n=4000, lang = "en")
 
-## Bez retweetow i bez zbednych kolumn
+## 艁膮czenie wcze艣niej zgromadzonych tweet贸w w jedn膮 baz臋 danych w formacie data frame, usuni臋cie retweet贸w z bazy danych, usuni臋cie zb臋dnych zmiennych
 
 tweets <- tbl_df(map_df(c(CD_Projekt_RED_Hash,Cyberpunk2077_Hash,CDPR_Hash,cd_projekt_red,CD_Projekt_RED,CDPR), as.data.frame))
 tweets_without_retweets <-tweets[tweets$isRetweet==FALSE,]
 tweets_without_retweets <- tweets_without_retweets[,c(1,3,5,11,12)]
 
-write.csv(tweets_without_retweets,file.path("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Twitter_raw_unique"), row.names = FALSE)
+## Zapisanie danych w formacie CSV
 
-## zmienna nowe tweety wybierajaca tylko te z dnia dzisiejszego
+write.csv(tweets_without_retweets,file.path("艣cie偶ka dost臋pu docelowego miejsca zapisu\\Twitter_raw_unique"), row.names = FALSE)
 
-twitter_raw_unique <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Twitter_raw_unique")
+## Wczytanie danych w formacie CSV
 
-ostatnie_24_h <- Sys.time()-(86400+12*3600)
+twitter_raw_unique <- read.csv("艣cie偶ka dost臋pu do pliku CSV\\Twitter_raw_unique")
+
+## Odfiltrowanie tweet贸w z ostatnich 24 godzin i oznaczenie ich jako nowe + usuni臋cie duplikat贸w z bazy danych
+
+ostatnie_24_h <- Sys.time()-(86400)
 test_unique <- as.character.Date(twitter_raw_unique$created)>=as.character.Date(ostatnie_24_h)
 twitter_raw_unique$test <- test_unique
 
@@ -48,7 +52,7 @@ nowe_tweety <- nowe_tweety[!duplikaty_nowe,]
 
 tweets_new <- nowe_tweety
 
-# za砤dowanie bazy danych z wcze渘iejszymi danymi i przerobienie formatu daty + usuni阠ie od razu duplikat體
+# za鲁adowanie bazy danych z wcze艙niejszymi danymi i przerobienie formatu daty + usuni锚cie od razu duplikat贸w
 
 old_data <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data")
 duplikaty_old <- duplicated(old_data$text)
@@ -56,7 +60,7 @@ old_data <- old_data[!duplikaty_old,]
 row.names(old_data)<-c(1:length(old_data$text))
 old_data<-na.omit(old_data)
 
-## po彻czenie 
+## po鲁鹿czenie 
 
 tweets_new$created <- as.character(tweets_new$created)
 dane_do_zapisu <- bind_rows(old_data,tweets_new)
@@ -215,9 +219,9 @@ x<-plot(wykres$minuty_unique ,wykres$suma_minuty, type = "l",lwd = 2, xlim = c(0
 points(wykres$minuty_unique ,wykres$suma_minuty, col = ifelse(wykres$suma_minuty>=0,"green","red"), pch = 19, cex = 1.2)
 abline(h=0, lty = 2,lwd = 2, col = "red")
 abline(h = mean(wykres$suma_minuty), lty= 3,lwd = 2, col = "blue")
-legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("渞ednia senymentu"), lty =3, lwd = 2,col = "blue")
+legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("艙rednia senymentu"), lty =3, lwd = 2,col = "blue")
 
-## ZAPIS ZDJ蔆IA
+## ZAPIS ZDJ脢CIA
 
 pdf("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Raport.pdf")
 
@@ -239,7 +243,7 @@ x<-plot(wykres$minuty_unique ,wykres$suma_minuty, type = "l",lwd = 2, xlim = c(0
 points(wykres$minuty_unique ,wykres$suma_minuty, col = ifelse(wykres$suma_minuty>=0,"green","red"), pch = 19, cex = 1.2)
 abline(h=0, lty = 2,lwd = 2, col = "red")
 abline(h = mean(wykres$suma_minuty), lty= 3,lwd = 2, col = "blue")
-legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("渞ednia senymentu"), lty =3, lwd = 2,col = "blue")
+legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("艙rednia senymentu"), lty =3, lwd = 2,col = "blue")
 
 dev.off()
                                 
