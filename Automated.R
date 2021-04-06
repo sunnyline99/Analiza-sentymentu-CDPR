@@ -54,7 +54,7 @@ tweets_new <- nowe_tweety
 
 # za³adowanie bazy danych z wczeœniejszymi danymi i przerobienie formatu daty + usuniêcie od razu duplikatów
 
-old_data <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data")
+old_data <- read.csv("ścieżka dostępu do obecnej bazy danych z Twittera\\Old_data")
 duplikaty_old <- duplicated(old_data$text)
 old_data <- old_data[!duplikaty_old,]
 row.names(old_data)<-c(1:length(old_data$text))
@@ -73,20 +73,20 @@ dane_do_zapisu <- dane_do_zapisu[order((dane_do_zapisu$created), decreasing = T)
 row.names(dane_do_zapisu)<-c(1:length(dane_do_zapisu$text))
 dane_do_zapisu <- dane_do_zapisu[,c(1:5)]
 
-write.csv(dane_do_zapisu, file.path("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data"), row.names = FALSE)
+write.csv(dane_do_zapisu, file.path("ścieżka dostępu do obecnej bazy danych z Twittera\\Old_data"), row.names = FALSE)
 
-raw <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data")
+raw <- read.csv("ścieżka dostępu do obecnej bazy danych z Twittera\\Old_data")
 duplikaty_raw <- duplicated(raw$text)
 sum(duplikaty_raw)
 raw <- raw[!duplikaty_raw,]
 row.names(raw)<-c(1:length(raw$text))
 raw<-na.omit(raw)
 
-write.csv(raw, file.path("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data"), row.names = FALSE)
+write.csv(raw, file.path("ścieżka dostępu do obecnej bazy danych z Twittera\\Old_data"), row.names = FALSE)
 
 ## Zapis danych w pdf
 
-Dane <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data")
+Dane <- read.csv("ścieżka dostępu do obecnej bazy danych z Twittera\\Old_data")
 system_minus_godzina <- format(Sys.time()-7200, "%Y-%m-%d %H:00:00")
 system_minus_minuta <- format(Sys.time()-7200, "%Y-%m-%d %H:59:59")
 test <- as.character.Date(Dane$created)>=as.character.Date(system_minus_godzina)
@@ -223,7 +223,7 @@ legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("œrednia senymentu"), lty
 
 ## ZAPIS ZDJÊCIA
 
-pdf("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Raport.pdf")
+pdf("ścieżka dostępu do zapisania reportu w formacie PDF\\Raport.pdf")
 
 set.seed(125) 
 
