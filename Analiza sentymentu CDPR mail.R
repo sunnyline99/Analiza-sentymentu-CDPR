@@ -4,8 +4,8 @@ library(glue)
 
 
 #create_smtp_creds_key(
- # id = "gmail_a",
-#  user = "analitykagospodarcza2018@gmail.com",
+ # id = "gmail",
+#  user = "mail wysyłającego",
 #  host = "smtp.gmail.com",
 #  port = 465,
 #  use_ssl = TRUE
@@ -17,7 +17,7 @@ system_minus_minuta <- format(Sys.time()-7200, "%Y-%m-%d %H:59:59")
 email_body <- glue(
 "
 
-Raport zosta� wygenerowany {Sys.time()} 
+Raport zostal wygenerowany {Sys.time()} 
 Obejmuje zakres czasowy od {system_minus_godzina} do {system_minus_minuta}
 
 "
@@ -25,7 +25,7 @@ Obejmuje zakres czasowy od {system_minus_godzina} do {system_minus_minuta}
 email_footer <- 
 "
 
-Raport stowrzy� Dawid Szyszko-Celi�ski
+Raport stowrzyl Dawid Szyszko-Celinski
 
 "
 
@@ -36,15 +36,15 @@ email <- compose_email(body = email_body,
 
 email %>%
   add_attachment(
-    file = "C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Raport.pdf",
-    content_type = mime::guess_type("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Raport.pdf"),
+    file = "sciezka dostępu do zapisanego raportu w formacie pdf",
+    content_type = mime::guess_type("sciezka dostępu do zapisanego raportu w formacie pdf"),
     filename = "Raport")%>%
 
 smtp_send(
-    from = "analitykagospodarcza2018@gmail.com",
-    to = "analitykagospodarcza2018@gmail.com",
+    from = "od kogo jest wysyłany mail",
+    to = "do kogo jest wysyłany mail",
     subject = "Raport godzinny",
-    credentials = creds_key(id = "gmail_a")
+    credentials = creds_key(id = "gmail")
     
   )
 
