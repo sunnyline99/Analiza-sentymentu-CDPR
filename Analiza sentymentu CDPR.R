@@ -241,7 +241,7 @@ legend("topright", legend = c("syuzhet","bing","afinn","nrc"), lty = 1, lwd = 2,
 
 ## Dołączenie notowań oraz badanie korelacji
 
-notowania <- as.data.frame(read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\cdr_d.csv"))
+notowania <- as.data.frame(read.csv("*ścieżka dostępu cdr_d.csv*"))
 
 sentiment_ts_data[,6] <- as.numeric(format.Date(sentiment_ts_data$inds,"%m%d"))
 colnames(sentiment_ts_data)[6] <- c("Dat")
