@@ -1,5 +1,5 @@
-## W≥πczenie funkcji z poniøszych bibliotek 
-## Jeúli nie zosta≥a zainstalowana jedna z bibliotek naleøy uøyÊ funkcji install.packages(*nazwa_biblioteki*)
+## W≈ÇƒÖczenie funkcji z poni≈ºszych bibliotek 
+## Je≈ºeli nie zosta≈Ça zainstalowana jedna z bibliotek nale≈ºy u≈ºyƒá funkcji install.packages(*nazwa_biblioteki*)
 
 library(graphics)
 library(purrr)
@@ -11,17 +11,17 @@ library(wordcloud)
 library(plyr)
 
 
-#Czyszczenie tweetow + zamiana emotek na tekst przez wgranie z pliku + analiza emotek
+#Czyszczenie tweetow + zamiana emotikon√≥w na tekst przez wgranie z pliku + analiza emotek
 
-Dane <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data")
+Dane <- read.csv("*dostƒôp do ≈õcie≈ºki Old_data*")
 
 Dane$text <- gsub("[<>]"," ", Dane$text)
 Dane$text <- gsub("000","",Dane$text)
 Dane$text <- gsub("\\+","!",Dane$text)
 Dane$text <- gsub("U!","",Dane$text)
 
-Emotikony_db <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\emoji_df.csv")
-Emotikony_sentyment <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Emoji_Sentiment_Data.csv")
+Emotikony_db <- read.csv("*dostƒôp do ≈õcie≈ºki emoji_df.csv*")
+Emotikony_sentyment <- read.csv("*dostƒôp do ≈õcie≈ºki Emoji_Sentiment_Data.csv*")
 Emotikony_sentyment$codepoints <- sprintf("%x", Emotikony_sentyment$Unicode.codepoint)
 
 Emotikony <- merge(x = Emotikony_db, y = Emotikony_sentyment, by = "codepoints", all.y = TRUE)
@@ -69,19 +69,19 @@ twitterCorpus <- tm_map(twitterCorpus, removeNumbers)
 removeURL <- function(x) gsub("http[[:alnum:]]*","",x)
 twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeURL))
 
-removeURL_2 <- function(x) gsub("edua[[:alnum:]]*","",x)
-twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeURL_2))
+#removeURL_2 <- function(x) gsub("edua[[:alnum:]]*","",x)
+#twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeURL_2))
 
 ## usuwanie znakow spoza ASCII np. cudzyslowie
 
 removeNonAscii <- function(x) textclean::replace_non_ascii(x)
 twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeNonAscii))
 
-## reczne usuwanie slow dotyczacych emotikonÛw itp.
+## reczne usuwanie slow dotyczacych emotikon√≥w itp.
 
 twitterCorpus <- tm_map(twitterCorpus, removeWords,c("amp","ufef","ufeft","uufefuufefuufef","uufef","s","uffuffuufef"))
 
-## usuwanie withespace czyli podwojnych spacji i wolnych miejsc
+## usuwanie withespace czyli podwojnych spacji i tabulator√≥w
 
 twitterCorpus <- tm_map(twitterCorpus, stripWhitespace)
 twitterCorpus <- tm_map(twitterCorpus, removePunctuation)
@@ -123,7 +123,7 @@ wordcloud(words = df$word, freq = sqrt(df$freq) , min.freq = 10,
           rot.per=0,colors=brewer.pal(8, "Dark2"), fixed.asp = F, scale = c(1.2,0.7))
 
 
-## emocjonalnosc wszystkich wypowiedzi w ca≥ym badanym okresie
+## emocjonalnosc wszystkich wypowiedzi w ca≈Çym badanym okresie
 
 emotions <- get_nrc_sentiment(Dane$text)
 
@@ -168,7 +168,7 @@ colnames(Dane)[6:9] <- c("sentiment_syuzhet","sentiment_bing","sentiment_afinn",
 sentiments <- Dane[,c(6:9)]
 cor(sentiments)
 
-## for loop øeby wyciagnac sentyment z kazdego dnia
+## for loop ≈ºeby wyciagnac sentyment z kazdego dnia
 
 inds <- seq(as.Date(min(Dane$created)),as.Date(max(Dane$created)), by = "day")
 inds <- as.Date(inds, "%Y-%m-%d")
@@ -227,7 +227,7 @@ sentiment_ts_data <- sentiment_ts_data[-c(1),]
 ## wizualizacja oceny sentymentu
 
 plot(sentiment_ts_data$inds,sentiment_ts_data$`suma_s/liczba_tweetow`, type = "l", col ="red", ylim = c(-3,30), lwd = 2, 
-     ylab = "PozytywnoúÊ wypowiedzi",
+     ylab = "Pozytywno≈ì√¶ wypowiedzi",
      xlab = "Data",
      xaxt="n")
 axis.Date(1, at=seq(min(sentiment_ts_data$inds), max(sentiment_ts_data$inds), "days"))
@@ -239,7 +239,7 @@ lines(sentiment_ts_data$inds,sentiment_ts_data$`suma_n/liczba_tweetow`, type = "
 legend("topright", legend = c("syuzhet","bing","afinn","nrc"), lty = 1, lwd = 2,col = c("red","green","blue","black"))
 
 
-## Do≥πczenie notowaÒ oraz badanie korelacji
+## Do≈ÇƒÖczenie notowa≈Ñ oraz badanie korelacji
 
 notowania <- as.data.frame(read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\cdr_d.csv"))
 
@@ -249,13 +249,13 @@ colnames(sentiment_ts_data)[6] <- c("Dat")
 notowania[,7] <- as.numeric(format.Date(notowania$Data,"%m%d"))
 colnames(notowania)[7] <- c("Dat")
 
-## po≥πczenie baz danych + analiza korelacji
+## po≈ÇƒÖczenie baz danych + analiza korelacji
 
 merge_data<- join(sentiment_ts_data,notowania, type = "left")
 merge_data<- merge_data[,c(1:5,11)]
 colnames(merge_data)<-c("Data","s","b","a","n","notowania")
 
-ccf(merge_data$s,merge_data$notowania,lag.max = 10,type = "correlation", plot = T,main ="Korelacja syuzhet i notowaÒ CDPR", na.action = na.pass)
+ccf(merge_data$s,merge_data$notowania,lag.max = 10,type = "correlation", plot = T,main ="Korelacja syuzhet i notowa√± CDPR", na.action = na.pass)
 cor.test(merge_data$s,merge_data$notowania)
 
 cor.test(merge_data$notowania,dplyr::lag(merge_data$n, 4))
