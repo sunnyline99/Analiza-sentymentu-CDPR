@@ -1,31 +1,31 @@
-## W≥πczenie funkcji z poniøszych bibliotek 
-## Jeúli nie zosta≥a zainstalowana jedna z bibliotek naleøy uøyÊ funkcji install.packages(*nazwa_biblioteki*)
+## W≈ÇƒÖczenie funkcji z poni≈ºszych bibliotek 
+## Je≈õli nie zosta≈Ça zainstalowana jedna z bibliotek nale≈ºy u≈ºyƒá funkcji install.packages(*nazwa_biblioteki*)
 
 library(blastula)
 library(glue)
 library(mime)
 
-## jednorazowe stworzenie klucza uatoryzujπcego
+## jednorazowe stworzenie klucza autoryzujƒÖcego
 
 #create_smtp_creds_key(
  # id = "gmail_a",
-#  user = "analitykagospodarcza2018@gmail.com",
+#  user = "*mail wysy≈ÇajƒÖcego*",
 #  host = "smtp.gmail.com",
 #  port = 465,
 #  use_ssl = TRUE
 #)
 
-## stowrzenie zmiennych do za≥πczenia w tekúcie
+## stowrzenie zmiennych do za≈ÇƒÖczenia w tek≈õcie
 
 system_minus_godzina <- format(Sys.time()-10800, "%Y-%m-%d %H:00:00")
 system_minus_minuta <- format(Sys.time()-10800, "%Y-%m-%d %H:59:59")
 
-## Stworzenie treúci maila
+## Stworzenie tre≈õci maila
 
 email_body <- glue(
 "
 
-Raport zosta≥ wygenerowany {Sys.time()} 
+Raport zosta≈Ç wygenerowany {Sys.time()} 
 Obejmuje zakres czasowy od {system_minus_godzina} do {system_minus_minuta}
 
 "
@@ -36,31 +36,31 @@ Obejmuje zakres czasowy od {system_minus_godzina} do {system_minus_minuta}
 email_footer <- 
 "
 
-Raport stowrzy≥ Dawid Szyszko-CeliÒski
+Raport stowrzy≈Ç XYZ
 
 "
 
-## po≥πczenie komponentÛw maila
+## po≈ÇƒÖczenie komponent√≥w maila
 
 
 email <- compose_email(body = email_body,
                        footer = email_footer)
 
 
-## dodanie za≥πcznika w formie PDF
+## dodanie za≈ÇƒÖcznika w formie PDF
 
 email %>%
   add_attachment(
-    file = "C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Raport.pdf",
-    content_type = mime::guess_type("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Raport.pdf"),
+    file = "*≈õcie≈ºka dostƒôpu do Raport.pdf*",
+    content_type = mime::guess_type("*≈õcie≈ºka dostƒôpu do Raport.pdf*"),
     filename = "Raport")%>%
 
   
-## autoryzacja oraz wys≥anie maila
+## autoryzacja oraz wys≈Çanie maila
   
 smtp_send(
-    from = "analitykagospodarcza2018@gmail.com",
-    to = "analitykagospodarcza2018@gmail.com",
+    from = "*mail wysy≈ÇajƒÖcego*",
+    to = "*mail odbiorcy*",
     subject = "Raport godzinny",
     credentials = creds_key(id = "gmail_a")
     
