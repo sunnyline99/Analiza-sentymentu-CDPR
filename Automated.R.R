@@ -1,5 +1,5 @@
-## W³¹czenie funkcji z poni¿szych bibliotek 
-## Jeœli nie zosta³a zainstalowana jedna z bibliotek nale¿y u¿yæ funkcji install.packages(*nazwa_biblioteki*)
+## WÅ‚czenie funkcji z poniÅ¼szych bibliotek 
+## JeÅ›i nie zostaÅ‚a zainstalowana jedna z bibliotek naleÅ¼y uÅ¼yÄ‡ funkcji install.packages(*nazwa_biblioteki*)
 
 library(twitteR)
 library(graphics)
@@ -12,11 +12,11 @@ library(stringr)
 
 ## Polaczenie RStudio z API Twittera
 
-api_key <- "6yNDDHBek6hzGVaP5PmTxcRwA"
-api_secret_key <- "qGJtZah9jMBM0Aa7o7oWHRRyYgO5tGc2twCthTBbRYG1m6PoWU"
-token_bearer <- "AAAAAAAAAAAAAAAAAAAAAEfcNAEAAAAABoULIjaTDdaxYoza2Wr8mWBYeIc%3DVFc6G6Dbc9mLqNJ7uRRANaK4LJDEGbxveXKcnVNspiJe99peHQ"
-acces_token <- "2387694907-nejkOeGq1nB85NIK79cymQGfwWu6l4avyvoxMDe"
-acces_token_secret <- "2vhgixTBWIJPORsl0v8vYzadGn9p2O6247waRq9CDyS5e"
+api_key <- "*klucz API ze strony twitter developer*"
+api_secret_key <- "*sekretny klucz API ze strony twitter developer*"
+token_bearer <- "*token ze strony twitter developer*"
+acces_token <- "*acces token ze strony twitter developer*"
+acces_token_secret <- "*acces secret token ze strony twitter developer*"
 setup_twitter_oauth(api_key,api_secret_key,acces_token,acces_token_secret)
 1
 
@@ -29,14 +29,14 @@ cd_projekt_red <- searchTwitter("cd projekt red", n=2000, lang = "en")
 CD_Projekt_RED <- searchTwitter("CD Project Red", n=2000, lang = "en")
 CDPR <- searchTwitter("CDPR", n=4000, lang = "en")
 
-## Usuniêcie retweetóW oraz oganiczenie bazy tylko do niezbêdnych kolumn + zapis danych na dysku
+## Usuniç’šie retweetè½‘ oraz oganiczenie bazy tylko do niezbç’ nych kolumn + zapis danych na dysku
 
 tweets <- tibble::as.tibble(map_df(c(CD_Projekt_RED_Hash,Cyberpunk2077_Hash,CDPR_Hash,cd_projekt_red,CD_Projekt_RED,CDPR), as.data.frame))
 tweets_without_retweets <-tweets[tweets$isRetweet==FALSE,]
 tweets_without_retweets <- tweets_without_retweets[,c(1,3,5,11,12)]
 write.csv(tweets_without_retweets,file.path("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Twitter_raw_unique"), row.names = FALSE)
 
-## Wybór tweetóW tylko z ostatnich 24 godzin + usuniêcie duplikatów
+## WybéŽ tweetè½‘ tylko z ostatnich 24 godzin + usuniç’šie duplikaté—š
 
 twitter_raw_unique <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Twitter_raw_unique")
 ostatnie_24_h <- Sys.time()-(86400)
@@ -49,7 +49,7 @@ nowe_tweety <- nowe_tweety[!duplikaty_nowe,]
 
 tweets_new <- nowe_tweety
 
-# Za³adowanie bazy danych ze starymi danymi i przerobienie formatu daty + usuniêcie duplikatóW
+# Zaè±‰dowanie bazy danych ze starymi danymi i przerobienie formatu daty + usuniç’šie duplikatè½‘
 
 old_data <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data")
 duplikaty_old <- duplicated(old_data$text)
@@ -57,7 +57,7 @@ old_data <- old_data[!duplikaty_old,]
 row.names(old_data)<-c(1:length(old_data$text))
 old_data<-na.omit(old_data)
 
-## Po³¹czenie nowej i starej bazy danych + zapis bazy na dysku
+## Poç« czenie nowej i starej bazy danych + zapis bazy na dysku
 
 tweets_new$created <- as.character(tweets_new$created)
 dane_do_zapisu <- bind_rows(old_data,tweets_new)
@@ -79,7 +79,7 @@ raw<-na.omit(raw)
 
 write.csv(raw, file.path("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data"), row.names = FALSE)
 
-## Wybór tylko ostatniej godziny z bazy danych (analiza krótkookresowa)
+## WybéŽ tylko ostatniej godziny z bazy danych (analiza kré’kookresowa)
 
 Dane <- read.csv("C:\\Users\\48799\\Desktop\\RStudio\\Projekt_licencjat\\Old_data")
 system_minus_godzina <- format(Sys.time()-10800, "%Y-%m-%d %H:00:00")
@@ -92,7 +92,7 @@ Dane_godzina <- Dane[Dane$test==T,]
 Dane_godzina <- Dane_godzina[Dane_godzina$test_2==T,]
 
 
-## Czyszczenie tekstu + analiza emotikonów
+## Czyszczenie tekstu + analiza emotikoné—š
 
 Dane_godzina$text <- gsub("[<>]"," ", Dane_godzina$text)
 Dane_godzina$text <- gsub("000","",Dane_godzina$text)
@@ -134,7 +134,7 @@ Emotikony_sentiment_sum <- ifelse(Emotikony_sentiment_sum >=3,3,Emotikony_sentim
 Emotikony_sentiment_sum <- ifelse(Emotikony_sentiment_sum <=-3,-3,Emotikony_sentiment_sum)
 Emotikony_sentiment_sum <- as.data.frame(Emotikony_sentiment_sum)
 
-## Czyszczenie danych ze zbêdnych znaków
+## Czyszczenie danych ze zbç’ nych znaké—š
 
 twitterCorpus <- Corpus(VectorSource(Dane_godzina$text))
 inspect(twitterCorpus[1:10])
@@ -151,16 +151,16 @@ twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeURL))
 removeURL_2 <- function(x) gsub("edua[[:alnum:]]*","",x)
 twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeURL_2))
 
-## usuwanie znakow spoza ASCII np. cudzys³owie
+## usuwanie znakow spoza ASCII np. cudzysé€™wie
 
 removeNonAscii <- function(x) textclean::replace_non_ascii(x)
 twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeNonAscii))
 
-## reczne usuwanie slów dotyczacych emotikonów
+## reczne usuwanie slé—š dotyczacych emotikoné—š
 
 twitterCorpus <- tm_map(twitterCorpus, removeWords,c("amp","ufef","ufeft","uufefuufefuufef","uufef","s","uffuffuufef"))
 
-## usuwanie withespace czyli podwojnych spacji i tabulatorów
+## usuwanie withespace czyli podwojnych spacji i tabulatoré—š
 
 twitterCorpus <- tm_map(twitterCorpus, stripWhitespace)
 twitterCorpus <- tm_map(twitterCorpus, removePunctuation)
@@ -170,7 +170,7 @@ twitterCorpus <- tm_map(twitterCorpus, removePunctuation)
 Dane_godzina[,1] <- twitterCorpus$content
 Dane_godzina <- Dane_godzina[order((Dane_godzina$created),decreasing = F),]
 
-## wa¿enie tweetóW
+## waçž nie tweetè½‘
 
 waga_favourite_count_godzina <- ifelse(Dane_godzina$favoriteCount>=10, 2.5 ,1)
 waga_favourite_count_godzina <- as.data.frame(waga_favourite_count_godzina)
@@ -197,7 +197,7 @@ wordcloud(words = df$word, freq = sqrt(df$freq) , min.freq = 10,
           max.words=100, random.order=FALSE, 
           rot.per=0,colors=brewer.pal(8, "Dark2"), fixed.asp = F, scale = c(0.8,1))
 
-## Emocjonalnoœæ godzinna
+## Emocjonalnoî°« godzinna
 
 emotions_godzina <- get_nrc_sentiment(Dane_godzina$text)
 
@@ -270,7 +270,7 @@ x<-plot(wykres$minuty_unique ,wykres$suma_minuty, type = "l",lwd = 2, xlim = c(0
 points(wykres$minuty_unique ,wykres$suma_minuty, col = ifelse(wykres$suma_minuty>=0,"green","red"), pch = 19, cex = 1.2)
 abline(h=0, lty = 2,lwd = 2, col = "red")
 abline(h = mean(wykres$suma_minuty), lty= 3,lwd = 2, col = "blue")
-legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("œrednia senymentu"), lty =3, lwd = 2,col = "blue")
+legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("î¯™ednia senymentu"), lty =3, lwd = 2,col = "blue")
 
 ## Zapis PDF na dysku
 
@@ -294,7 +294,7 @@ x<-plot(wykres$minuty_unique ,wykres$suma_minuty, type = "l",lwd = 2, xlim = c(0
 points(wykres$minuty_unique ,wykres$suma_minuty, col = ifelse(wykres$suma_minuty>=0,"green","red"), pch = 19, cex = 1.2)
 abline(h=0, lty = 2,lwd = 2, col = "red")
 abline(h = mean(wykres$suma_minuty), lty= 3,lwd = 2, col = "blue")
-legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("œrednia senymentu"), lty =3, lwd = 2,col = "blue")
+legend(x=-2,y=max(wykres$suma_minuty)+1.2, legend = c("î¯™ednia senymentu"), lty =3, lwd = 2,col = "blue")
 
 dev.off()
                                 
