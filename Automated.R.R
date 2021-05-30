@@ -1,4 +1,4 @@
-## Włczenie funkcji z poniższych bibliotek 
+## Włączenie funkcji z poniższych bibliotek 
 ## Jeśi nie została zainstalowana jedna z bibliotek należy użyć funkcji install.packages(*nazwa_biblioteki*)
 
 library(twitteR)
