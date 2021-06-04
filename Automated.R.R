@@ -148,9 +148,6 @@ twitterCorpus <- tm_map(twitterCorpus, removeNumbers)
 removeURL <- function(x) gsub("http[[:alnum:]]*","",x)
 twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeURL))
 
-#removeURL_2 <- function(x) gsub("edua[[:alnum:]]*","",x)
-#twitterCorpus <- tm_map(twitterCorpus, content_transformer(removeURL_2))
-
 ## usuwanie znakow spoza ASCII np. cudzysłowie
 
 removeNonAscii <- function(x) textclean::replace_non_ascii(x)
